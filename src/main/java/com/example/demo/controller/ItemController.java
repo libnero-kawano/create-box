@@ -17,35 +17,34 @@ import com.example.demo.repository.ItemRepository;
 @Controller
 public class ItemController {
 
-	@Autowired
-	Account account;
+  @Autowired
+  Account account;
 
-	@Autowired
-	CategoryRepository categoryRepository;
+  @Autowired
+  CategoryRepository categoryRepository;
 
-	@Autowired
-	ItemRepository itemRepository;
+  @Autowired
+  ItemRepository itemRepository;
 
-	// 商品一覧表示
-	@GetMapping("/items")
-	public String index(
-			@RequestParam(value = "categoryId", defaultValue = "") Integer categoryId,
-			Model model) {
+  // 商品一覧表示
+  @GetMapping("/items")
+  public String index(@RequestParam(value = "categoryId", defaultValue = "") Integer categoryId,
+      Model model) {
 
-		// 全カテゴリー一覧を取得
-		List<Category> categoryList = categoryRepository.findAll();
-		model.addAttribute("categories", categoryList);
+    // 全カテゴリー一覧を取得
+    List<Category> categoryList = categoryRepository.findAll();
+    model.addAttribute("categories", categoryList);
 
-		// 商品一覧情報の取得
-		List<Item> itemList = null;
-		if (categoryId == null) {
-			itemList = itemRepository.findAll();
-		} else {
-			// itemsテーブルをカテゴリーIDを指定して一覧を取得
-			itemList = itemRepository.findByCategoryId(categoryId);
-		}
-		model.addAttribute("items", itemList);
+    // 商品一覧情報の取得
+    List<Item> itemList = null;
+    if (categoryId == null) {
+      itemList = itemRepository.findAll();
+    } else {
+      // itemsテーブルをカテゴリーIDを指定して一覧を取得
+      itemList = itemRepository.findByCategoryId(categoryId);
+    }
+    model.addAttribute("items", itemList);
 
-		return "items";
-	}
+    return "items";
+  }
 }

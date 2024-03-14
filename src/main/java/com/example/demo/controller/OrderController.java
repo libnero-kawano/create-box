@@ -23,79 +23,64 @@ import com.example.demo.repository.OrderRepository;
 @Controller
 public class OrderController {
 
-	@Autowired
-	Cart cart;
+  @Autowired
+  Cart cart;
 
-	@Autowired
-	CustomerRepository customerRepository;
+  @Autowired
+  CustomerRepository customerRepository;
 
-	@Autowired
-	OrderRepository orderRepository;
+  @Autowired
+  OrderRepository orderRepository;
 
-	@Autowired
-	OrderDetailRepository orderDetailRepository;
+  @Autowired
+  OrderDetailRepository orderDetailRepository;
 
-	// 注文内容確認とお客様情報入力画面を表示
-	@GetMapping("/order")
-	public String index() {
+  // 注文内容確認とお客様情報入力画面を表示
+  @GetMapping("/order")
+  public String index() {
 
-		return "customerForm";
-	}
+    return "customerForm";
+  }
 
-	// 注文内容およびお客様情報内容の確認画面を表示
-	@PostMapping("/order/confirm")
-	public String confirm(
-			@RequestParam("name") String name,
-			@RequestParam("address") String address,
-			@RequestParam("tel") String tel,
-			@RequestParam("email") String email,
-			Model model) {
+  // 注文内容およびお客様情報内容の確認画面を表示
+  @PostMapping("/order/confirm")
+  public String confirm(@RequestParam("name") String name, @RequestParam("address") String address,
+      @RequestParam("tel") String tel, @RequestParam("email") String email, Model model) {
 
-		// お客様情報をまとめる
-		Customer customer = new Customer(name, address, tel, email);
-		model.addAttribute("customer", customer);
+    // お客様情報をまとめる
+    Customer customer = new Customer(name, address, tel, email);
+    model.addAttribute("customer", customer);
 
-		return "orderConfirm";
-	}
+    return "orderConfirm";
+  }
 
-	// 注文する
-	@PostMapping("/order")
-	public String order(
-			@RequestParam("name") String name,
-			@RequestParam("address") String address,
-			@RequestParam("tel") String tel,
-			@RequestParam("email") String email,
-			Model model) {
+  // 注文する
+  @PostMapping("/order")
+  public String order(@RequestParam("name") String name, @RequestParam("address") String address,
+      @RequestParam("tel") String tel, @RequestParam("email") String email, Model model) {
 
-		// 1. お客様情報をDBに格納する
-		Customer customer = new Customer(name, address, tel, email);
-		customerRepository.save(customer);
+    // 1. お客様情報をDBに格納する
+    Customer customer = new Customer(name, address, tel, email);
+    customerRepository.save(customer);
 
-		// 2. 注文情報をDBに格納する
-		Order order = new Order(
-				customer.getId(),
-				LocalDate.now(),
-				cart.getTotalPrice());
-		orderRepository.save(order);
+    // 2. 注文情報をDBに格納する
+    Order order = new Order(customer.getId(), LocalDate.now(), cart.getTotalPrice());
+    orderRepository.save(order);
 
-		// 3. 注文詳細情報をDBに格納する
-		List<Item> itemList = cart.getItems();
-		List<OrderDetail> orderDetails = new ArrayList<>();
-		for (Item item : itemList) {
-			orderDetails.add(
-					new OrderDetail(
-							order.getId(),
-							item.getId(),
-							item.getQuantity()));
-		}
-		orderDetailRepository.saveAll(orderDetails);
+    // 3. 注文詳細情報をDBに格納する
+    List<Item> itemList = cart.getItems();
+    List<OrderDetail> orderDetails = new ArrayList<>();
+    for (Item item : itemList) {
+      orderDetails.add(new OrderDetail(order.getId(), item.getId(), item.getQuantity()));
+    }
+    orderDetailRepository.saveAll(orderDetails);
 
-		// セッションスコープのカート情報をクリアする
-		cart.clear();
+    // セッションスコープのカート情報をクリアする
+    cart.clear();
 
-		// 画面返却用注文番号を設定する
-		model.addAttribute("orderNumber", order.getId());
+    // 画面返却用注文番号を設定する
+    model.addAttribute("orderNumber", order.getId());
 
-		return "ordered";
-	}
+    return "ordered";
+  }
 }

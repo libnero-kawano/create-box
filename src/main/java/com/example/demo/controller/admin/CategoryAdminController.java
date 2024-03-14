@@ -18,74 +18,69 @@ import com.example.demo.repository.CategoryRepository;
 @RequestMapping("/admin/categories")
 public class CategoryAdminController {
 
-	@Autowired
-	CategoryRepository categoryRepository;
+  @Autowired
+  CategoryRepository categoryRepository;
 
-	// カテゴリー一覧表示
-	@GetMapping
-	public String index(
-			@RequestParam(value = "categoryId", defaultValue = "") Integer categoryId,
-			Model model) {
+  // カテゴリー一覧表示
+  @GetMapping
+  public String index(@RequestParam(value = "categoryId", defaultValue = "") Integer categoryId,
+      Model model) {
 
-		// テーブルから全カテゴリー一覧を取得
-		List<Category> categoryList = categoryRepository.findAll();
-		model.addAttribute("categories", categoryList);
+    // テーブルから全カテゴリー一覧を取得
+    List<Category> categoryList = categoryRepository.findAll();
+    model.addAttribute("categories", categoryList);
 
-		return "admin/categories";
-	}
+    return "admin/categories";
+  }
 
-	// 新規登録画面の表示
-	@GetMapping("/add")
-	public String create() {
+  // 新規登録画面の表示
+  @GetMapping("/add")
+  public String create() {
 
-		return "admin/addCategory";
-	}
+    return "admin/addCategory";
+  }
 
-	// 新規登録処理
-	@PostMapping("/add")
-	public String store(
-			@RequestParam(value = "name", defaultValue = "") String name,
-			Model model) {
+  // 新規登録処理
+  @PostMapping("/add")
+  public String store(@RequestParam(value = "name", defaultValue = "") String name, Model model) {
 
-		Category category = new Category(name);
+    Category category = new Category(name);
 
-		// テーブルへの反映（INSERT）
-		categoryRepository.save(category);
-		return "redirect:/admin/categories";
-	}
+    // テーブルへの反映（INSERT）
+    categoryRepository.save(category);
+    return "redirect:/admin/categories";
+  }
 
-	// 更新画面表示
-	@GetMapping("/{id}/edit")
-	public String edit(@PathVariable("id") Integer id, Model model) {
+  // 更新画面表示
+  @GetMapping("/{id}/edit")
+  public String edit(@PathVariable("id") Integer id, Model model) {
 
-		// テーブルをID（主キー）で検索
-		Category category = categoryRepository.findById(id).get();
-		model.addAttribute("category", category);
+    // テーブルをID（主キー）で検索
+    Category category = categoryRepository.findById(id).get();
+    model.addAttribute("category", category);
 
-		return "admin/editCategory";
-	}
+    return "admin/editCategory";
+  }
 
-	// 更新処理
-	@PostMapping("/{id}/edit")
-	public String update(
-			@PathVariable("id") Integer id,
-			@RequestParam(value = "name", defaultValue = "") String name,
-			Model model) {
+  // 更新処理
+  @PostMapping("/{id}/edit")
+  public String update(@PathVariable("id") Integer id,
+      @RequestParam(value = "name", defaultValue = "") String name, Model model) {
 
-		// Categoryオブジェクトの生成
-		Category category = new Category(id, name);
-		// itemsテーブルへの反映（UPDATE）
-		categoryRepository.save(category);
-		return "redirect:/admin/categories";
-	}
+    // Categoryオブジェクトの生成
+    Category category = new Category(id, name);
+    // itemsテーブルへの反映（UPDATE）
+    categoryRepository.save(category);
+    return "redirect:/admin/categories";
+  }
 
-	// 削除処理
-	@PostMapping("/{id}/delete")
-	public String delete(@PathVariable("id") Integer id, Model model) {
+  // 削除処理
+  @PostMapping("/{id}/delete")
+  public String delete(@PathVariable("id") Integer id, Model model) {
 
-		// テーブルから削除（DELETE）
-		categoryRepository.deleteById(id);
-		return "redirect:/admin/categories";
-	}
+    // テーブルから削除（DELETE）
+    categoryRepository.deleteById(id);
+    return "redirect:/admin/categories";
+  }
 
 }

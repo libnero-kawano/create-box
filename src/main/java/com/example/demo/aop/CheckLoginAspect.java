@@ -14,54 +14,52 @@ import com.example.demo.model.Account;
 @Component
 public class CheckLoginAspect {
 
-	@Autowired
-	Account account;
+  @Autowired
+  Account account;
 
-	// ログ出力処理
-	// 全Controllerクラスの全メソッド処理前を指定
-	@Before("execution(* com.example.demo.controller.*Controller.*(..))")
-	public void writeLog(JoinPoint jp) {
-		// ログインしたアカウント情報を取得
-		if (account == null || account.getName() == null
-				|| account.getName().length() == 0) {
-			System.out.print("ゲスト：");
-		} else {
-			System.out.print(account.getName() + "：");
-		}
-		System.out.println(jp.getSignature());
-	}
+  // ログ出力処理
+  // 全Controllerクラスの全メソッド処理前を指定
+  @Before("execution(* com.example.demo.controller.*Controller.*(..))")
+  public void writeLog(JoinPoint jp) {
+    // ログインしたアカウント情報を取得
+    if (account == null || account.getName() == null || account.getName().length() == 0) {
+      System.out.print("ゲスト：");
+    } else {
+      System.out.print(account.getName() + "：");
+    }
+    System.out.println(jp.getSignature());
+  }
 
-	// 未ログインの場合ログインページにリダイレクト
-	@Around("execution(* com.example.demo.controller.ItemController.*(..)) ||"
-			+ "execution(* com.example.demo.controller.CartController.*(..)) ||"
-			+ "execution(* com.example.demo.controller.OrderController.*(..))")
-	public Object checkLogin(ProceedingJoinPoint jp) throws Throwable {
+  // 未ログインの場合ログインページにリダイレクト
+  @Around("execution(* com.example.demo.controller.ItemController.*(..)) ||"
+      + "execution(* com.example.demo.controller.CartController.*(..)) ||"
+      + "execution(* com.example.demo.controller.OrderController.*(..))")
+  public Object checkLogin(ProceedingJoinPoint jp) throws Throwable {
 
-		if (account == null || account.getName() == null
-				|| account.getName().length() == 0) {
-			System.err.println("ログインしていません!");
-			// リダイレクト先を指定する
-			// パラメータを渡すことでログインControllerで
-			// 個別のメッセージをThymeleafに渡すことも可能
-			return "redirect:/login?error=notLoggedIn";
-		}
-		// Controller内のメソッドの実行
-		return jp.proceed();
-	}
+    if (account == null || account.getName() == null || account.getName().length() == 0) {
+      System.err.println("ログインしていません!");
+      // リダイレクト先を指定する
+      // パラメータを渡すことでログインControllerで
+      // 個別のメッセージをThymeleafに渡すことも可能
+      return "redirect:/login?error=notLoggedIn";
+    }
+    // Controller内のメソッドの実行
+    return jp.proceed();
+  }
 
-	// 管理者機能用ログインチェック
-	@Around("execution(* com.example.demo.controller.admin.ItemAdminController.*(..)) ||"
-			+ "execution(* com.example.demo.controller.admin.CategoryAdminController.*(..)) ||"
-			+ "execution(* com.example.demo.controller.admin.CustomerAdminController.*(..)) ")
-	public Object checkAdminLogin(ProceedingJoinPoint jp) throws Throwable {
+  // 管理者機能用ログインチェック
+  @Around("execution(* com.example.demo.controller.admin.ItemAdminController.*(..)) ||"
+      + "execution(* com.example.demo.controller.admin.CategoryAdminController.*(..)) ||"
+      + "execution(* com.example.demo.controller.admin.CustomerAdminController.*(..)) ")
+  public Object checkAdminLogin(ProceedingJoinPoint jp) throws Throwable {
 
-		if (account == null || account.getName() == null
-				|| account.getName().length() == 0 || !account.getName().equals("admin")) {
-			System.err.println("ログインしていません!");
+    if (account == null || account.getName() == null || account.getName().length() == 0
+        || !account.getName().equals("admin")) {
+      System.err.println("ログインしていません!");
 
-			return "redirect:/admin/login";
-		}
-		// Controller内のメソッドの実行
-		return jp.proceed();
-	}
+      return "redirect:/admin/login";
+    }
+    // Controller内のメソッドの実行
+    return jp.proceed();
+  }
 }

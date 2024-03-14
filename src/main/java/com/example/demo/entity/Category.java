@@ -9,31 +9,30 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "categories")
 public class Category {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id; // カテゴリーID
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id; // カテゴリーID
 
-	private String name; // カテゴリー名
+  private String name; // カテゴリー名
 
-	// コンストラクタ
-	public Category() {
-	}
+  // コンストラクタ
+  public Category() {}
 
-	public Category(Integer id, String name) {
-		this.id = id;
-		this.name = name;
-	}
+  public Category(Integer id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 
-	public Category(String name) {
-		this.name = name;
-	}
+  public Category(String name) {
+    this.name = name;
+  }
 
-	// ゲッター
-	public Integer getId() {
-		return id;
-	}
+  // ゲッター
+  public Integer getId() {
+    return id;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 }

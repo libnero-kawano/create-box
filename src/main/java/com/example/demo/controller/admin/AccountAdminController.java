@@ -16,36 +16,34 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/admin/login")
 public class AccountAdminController {
 
-	@Autowired
-	HttpSession session;
+  @Autowired
+  HttpSession session;
 
-	@Autowired
-	Account account;
+  @Autowired
+  Account account;
 
-	// 管理者ログイン画面初期表示
-	@GetMapping
-	public String index() {
+  // 管理者ログイン画面初期表示
+  @GetMapping
+  public String index() {
 
-		// セッション破棄
-		session.invalidate();
-		return "admin/login";
-	}
+    // セッション破棄
+    session.invalidate();
+    return "admin/login";
+  }
 
-	// 管理者ログイン処理
-	@PostMapping
-	public String login(
-			@RequestParam("name") String name,
-			@RequestParam("password") String password,
-			Model model) {
+  // 管理者ログイン処理
+  @PostMapping
+  public String login(@RequestParam("name") String name, @RequestParam("password") String password,
+      Model model) {
 
-		// ログインチェック
-		if (!name.equals("admin") || !password.equals("himitu")) {
-			model.addAttribute("message", "ユーザ名とパスワードが一致しませんでした");
-			return "admin/login";
-		}
+    // ログインチェック
+    if (!name.equals("admin") || !password.equals("himitu")) {
+      model.addAttribute("message", "ユーザ名とパスワードが一致しませんでした");
+      return "admin/login";
+    }
 
-		account.setName("admin");
-		return "redirect:/admin/items";
+    account.setName("admin");
+    return "redirect:/admin/items";
 
-	}
+  }
 }

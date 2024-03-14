@@ -8,6 +8,6 @@ import com.example.demo.entity.VOrderDetail;
 
 public interface VOrderDetailRepository extends JpaRepository<VOrderDetail, Integer> {
 
-	// SELECT * FROM order_details WHERE order_id = ?
-	List<VOrderDetail> findByOrderId(Integer id);
+  // SELECT * FROM order_details WHERE order_id = ?
+  List<VOrderDetail> findByOrderId(Integer id);
 }

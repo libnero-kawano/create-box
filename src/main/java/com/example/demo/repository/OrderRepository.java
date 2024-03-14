@@ -8,6 +8,6 @@ import com.example.demo.entity.Order;
 
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 
-	// SELECT * FROM orders WHERE customer_id = ?
-	List<Order> findByCustomerId(Integer id);
+  // SELECT * FROM orders WHERE customer_id = ?
+  List<Order> findByCustomerId(Integer id);
 }

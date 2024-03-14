@@ -10,42 +10,41 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "order_details")
 public class OrderDetail {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id; // 注文明細ID
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id; // 注文明細ID
 
-	@Column(name = "order_id")
-	private Integer orderId; // 注文ID
+  @Column(name = "order_id")
+  private Integer orderId; // 注文ID
 
-	@Column(name = "item_id")
-	private Integer itemId; // 商品ID
+  @Column(name = "item_id")
+  private Integer itemId; // 商品ID
 
-	private Integer quantity; // 数量
+  private Integer quantity; // 数量
 
-	// コンストラクタ
-	public OrderDetail() {
-	}
+  // コンストラクタ
+  public OrderDetail() {}
 
-	public OrderDetail(Integer orderId, Integer itemId, Integer quantity) {
-		this.orderId = orderId;
-		this.itemId = itemId;
-		this.quantity = quantity;
-	}
+  public OrderDetail(Integer orderId, Integer itemId, Integer quantity) {
+    this.orderId = orderId;
+    this.itemId = itemId;
+    this.quantity = quantity;
+  }
 
-	public Integer getId() {
-		return id;
-	}
+  public Integer getId() {
+    return id;
+  }
 
-	public Integer getOrderId() {
-		return orderId;
-	}
+  public Integer getOrderId() {
+    return orderId;
+  }
 
-	public Integer getItemId() {
-		return itemId;
-	}
+  public Integer getItemId() {
+    return itemId;
+  }
 
-	public Integer getQuantity() {
-		return quantity;
-	}
+  public Integer getQuantity() {
+    return quantity;
+  }
 
 }
